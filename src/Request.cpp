@@ -92,7 +92,7 @@ void Request::performCPRequest() {
             if (str == "Failed." || str == "-1") {
                 return;
             }
-            Request::m_cp = geode::utils::numFromString<int>(parseRequest(str, "8")).unwrapOr(0);
+            Request::m_cp = std::stoi(parseRequest(str, "8"));
 
             log::info("Creator Points from request: {}", Request::m_cp);
 
@@ -108,9 +108,8 @@ void Request::performCPRequest() {
             int nextLevel = LevelHelper::getLevelFromEXP(newEXP);
             int nextLevelEXP = LevelHelper::getEXPRequiredForLevel(nextLevel);
 
-            auto scene = CCDirector::sharedDirector()->getRunningScene();
-
-                Loader::get()->queueInMainThread([scene, originalEXP, newEXP, currentLevel, nextLevelEXP, nextLevel] {
+                Loader::get()->queueInMainThread([originalEXP, newEXP, currentLevel, nextLevelEXP, nextLevel] {
+                    auto scene = CCDirector::sharedDirector()->getRunningScene();
 
                     CCLayer* parentLayer = nullptr;
                     CCObject* obj;
